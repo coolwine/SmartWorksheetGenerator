@@ -7,8 +7,6 @@ export enum Subject {
 }
 
 export enum DigitMode {
-  ONE_ONE = '1x1',
-  ONE_TWO = '1x2',
   TWO_TWO = '2x2',
   TWO_THREE = '2x3',
   THREE_THREE = '3x3'
@@ -17,7 +15,6 @@ export enum DigitMode {
 export enum OperationType {
   ADDITION = 'addition',
   SUBTRACTION = 'subtraction',
-  MULTIPLICATION = 'multiplication',
   MIXED = 'mixed'
 }
 
@@ -30,7 +27,7 @@ export interface MathProblem {
   id: number;
   num1: number;
   num2: number;
-  operation: '+' | '-' | '×';
+  operation: '+' | '-';
   answer: number;
 }
 
@@ -39,7 +36,6 @@ export interface GeneratorConfig {
   digitMode: DigitMode;
   operation: OperationType;
   format: ProblemFormat;
-  cols: number; // Added column count configuration
 }
 
 // Chinese Character Types
@@ -94,5 +90,4 @@ export interface EnglishGeneratorConfig {
   count: number;
   grade: EnglishGrade;
   type: EnglishProblemType;
-  cols: number; // Added column count configuration for English
 }
