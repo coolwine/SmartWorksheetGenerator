@@ -11,30 +11,37 @@ interface Props {
 }
 
 export const ChineseProblemItem: React.FC<Props> = ({ problem, index, type, density }) => {
-  const isCompact = density === 'compact';
-  const isRelaxed = density === 'relaxed';
-
+  // 쓰기 연습 모드 (Writing Practice) - 가로 8칸 그리드 유지
   if (type === ChineseProblemType.WRITING_PRACTICE) {
-    const boxSize = isCompact ? 'w-12 h-12 text-2xl' : isRelaxed ? 'w-24 h-24 text-5xl' : 'w-16 h-16 text-3xl';
-    const numBoxes = isCompact ? 10 : isRelaxed ? 6 : 8;
-
     return (
-      <div className={`flex items-center w-full relative gap-4 ${isCompact ? 'p-2' : isRelaxed ? 'p-6' : 'p-4'}`}>
-        <span className="absolute top-1 left-1 text-[10px] text-slate-300 font-bold">{index + 1}</span>
-        
-        <div className="flex flex-col items-center shrink-0 ml-4">
-          <div className={`${boxSize} font-serif border-2 border-slate-900 flex items-center justify-center bg-slate-50 relative shadow-sm`}>
-            {problem.character}
-          </div>
-          <div className={`${isCompact ? 'text-[11px]' : 'text-[14px]'} font-bold text-slate-900 mt-1`}>{problem.meaning} {problem.reading}</div>
-        </div>
-
-        <div className="flex-1 flex gap-1 overflow-hidden py-1">
-          {Array.from({ length: numBoxes }).map((_, i) => (
-            <div key={i} className={`${boxSize} border border-slate-300 relative bg-white shrink-0 shadow-sm`}>
-              {i === 0 && <span className="absolute inset-0 flex items-center justify-center font-serif text-slate-100 pointer-events-none opacity-50">{problem.character}</span>}
-              <div className="absolute inset-0 border-t border-dashed border-slate-100 top-1/2 pointer-events-none"></div>
-              <div className="absolute inset-0 border-l border-dashed border-slate-100 left-1/2 pointer-events-none"></div>
+      <div className={`flex w-full relative items-center border-b-2 border-slate-900 last:border-b-0 p-0 print:p-0`}>
+        <span className="absolute top-0.5 left-0.5 text-[7px] text-slate-300 font-bold z-20 pointer-events-none">{index + 1}</span>
+        <div className="flex-1 grid grid-cols-8 gap-0 border-t border-slate-300">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="h-[1.8cm] md:h-[2.1cm] border-r border-b border-slate-300 relative bg-white overflow-hidden first:border-l first:border-slate-300 print:h-[2.1cm]">
+              {i === 0 ? (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-50">
+                  <span className="font-serif text-slate-900 text-3xl md:text-4xl lg:text-5xl leading-none print:text-5xl">
+                    {problem.character}
+                  </span>
+                  <div className="absolute bottom-0.5 left-0 right-0 text-center px-0.5">
+                    <span className="text-[7px] md:text-[8px] lg:text-[9px] font-black text-blue-900 bg-white/90 px-1 rounded-sm leading-none whitespace-nowrap print:text-[8px]">
+                      {problem.meaning} {problem.reading}
+                    </span>
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.15]">
+                    <div className="w-full h-[0.5px] border-t border-slate-400"></div>
+                    <div className="h-full w-[0.5px] border-l border-slate-400 absolute"></div>
+                  </div>
+                </div>
+              ) : (
+                <div className="absolute inset-0">
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-full h-[0.5px] border-t border-dashed border-slate-100"></div>
+                    <div className="h-full w-[0.5px] border-l border-dashed border-slate-100 absolute"></div>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -42,27 +49,35 @@ export const ChineseProblemItem: React.FC<Props> = ({ problem, index, type, dens
     );
   }
 
+  // 객관식 / 주관식 모드 (가로형 1열 레이아웃으로 변경)
+  // 20문항을 한 페이지에 넣기 위해 높이를 타이트하게 조정 (약 45-50px)
   return (
-    <div className={`flex flex-col relative items-center justify-center ${isCompact ? 'p-2 min-h-[80px]' : isRelaxed ? 'p-8 min-h-[160px]' : 'p-4 min-h-[120px]'}`}>
-      <span className="absolute top-1 left-1 text-[10px] text-slate-300 font-bold">{index + 1}</span>
-      <div className={`${isCompact ? 'text-3xl mb-2' : isRelaxed ? 'text-6xl mb-6' : 'text-4xl mb-4'} font-serif text-slate-900`}>
-        {problem.character}
+    <div className={`flex relative items-center w-full px-4 py-1.5 md:py-2 print:py-1.5 min-h-[45px] md:min-h-[50px] print:min-h-[48px] bg-white`}>
+      <span className="absolute top-1 left-1 text-[8px] text-slate-300 font-bold">{index + 1}</span>
+      
+      {/* 왼쪽에 한자 표시 */}
+      <div className="flex items-center justify-center w-12 md:w-16 shrink-0 border-r border-slate-100 mr-4">
+        <span className="text-2xl md:text-3xl font-serif text-slate-900">{problem.character}</span>
       </div>
       
-      {type === ChineseProblemType.MULTIPLE_CHOICE ? (
-        <div className={`grid grid-cols-2 gap-x-2 w-full ${isCompact ? 'text-[10px]' : 'text-[13px]'}`}>
-          {problem.options?.map((opt, i) => (
-            <div key={i} className="flex gap-1 border-b border-slate-50 pb-0.5">
-              <span className="font-black text-slate-400">({i + 1})</span>
-              <span className="truncate">{opt}</span>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className={`${isCompact ? 'w-24' : 'w-32'} border-b-2 border-slate-300 h-6 flex items-center justify-center`}>
-          <span className="text-[9px] text-slate-200">(뜻과 음을 쓰세요)</span>
-        </div>
-      )}
+      {/* 오른쪽에 선택지 또는 주관식 입력란 */}
+      <div className="flex-1 flex items-center">
+        {type === ChineseProblemType.MULTIPLE_CHOICE ? (
+          <div className="grid grid-cols-4 gap-x-4 w-full text-[10px] md:text-[12px] print:text-[11px]">
+            {problem.options?.map((opt, i) => (
+              <div key={i} className="flex items-center gap-1 overflow-hidden whitespace-nowrap">
+                <span className="font-black text-slate-400 shrink-0">({i + 1})</span>
+                <span className="font-medium truncate text-slate-700">{opt}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-center gap-3 w-full">
+            <span className="text-[10px] text-slate-400 shrink-0">(뜻과 음을 쓰세요)</span>
+            <div className="flex-1 border-b-2 border-slate-200 h-6"></div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
