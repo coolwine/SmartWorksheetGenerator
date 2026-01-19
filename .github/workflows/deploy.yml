@@ -68,7 +68,8 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload the entire repository if no build step, or 'dist' if it exists
-          path: "./"
+          # path: "./"
+          path: "dist/"
 
   # Deployment job
   deploy:
