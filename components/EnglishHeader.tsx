@@ -55,5 +55,5 @@ export const EnglishHeader: React.FC<EnglishHeaderProps> = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}

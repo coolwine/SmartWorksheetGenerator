@@ -14,7 +14,7 @@ import {
   EnglishGrade
 } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || process.env.API_KEY || "" });
 
 export const generateMathProblems = async (config: GeneratorConfig): Promise<MathProblem[]> => {
   const digitContext = {
