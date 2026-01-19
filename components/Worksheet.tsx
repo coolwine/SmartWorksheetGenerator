@@ -20,12 +20,13 @@ interface WorksheetProps {
   showAnswerKey: boolean;
   density: Density;
   gridColsClass: string;
+  isLoading: boolean;
 }
 
 export const Worksheet: React.FC<WorksheetProps> = ({
   currentSubject, mathProblems, chineseProblems, englishProblems,
   mathConfig, chineseConfig, englishConfig,
-  showAnswerKey, density, gridColsClass
+  showAnswerKey, density, gridColsClass, isLoading
 }) => {
   const currentProblems = currentSubject === Subject.MATH ? mathProblems : (currentSubject === Subject.CHINESE ? chineseProblems : englishProblems);
   const subjectTitle = { 
@@ -36,6 +37,16 @@ export const Worksheet: React.FC<WorksheetProps> = ({
   }[currentSubject];
   
   const isWritingPractice = currentSubject === Subject.CHINESE && chineseConfig.type === ChineseProblemType.WRITING_PRACTICE;
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full py-40 no-print">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+        <p className="text-xl font-medium text-slate-600">AI가 문제를 생성하고 있습니다...</p>
+        <p className="text-sm text-slate-400 mt-2">잠시만 기다려주세요.</p>
+      </div>
+    );
+  }
 
   if (currentProblems.length === 0) {
     return (
@@ -48,12 +59,12 @@ export const Worksheet: React.FC<WorksheetProps> = ({
 
   return (
     <div className="relative h-full flex flex-col">
-      <div className={`border-b-4 border-slate-900 flex justify-between items-end ${isWritingPractice ? 'pb-1 mb-1 print:mb-0.5' : 'pb-3 mb-6'}`}>
+      <div className={`border-b-4 border-slate-900 flex justify-between items-end ${isWritingPractice ? 'pb-1 mb-1' : 'pb-3 mb-6'}`}>
         <div>
           <h2 className={`${isWritingPractice ? 'text-2xl' : 'text-3xl'} font-black text-slate-900 tracking-tight`}>{subjectTitle}</h2>
           <div className="flex gap-2 mt-0.5">
             <span className="bg-slate-100 px-2 py-0.5 rounded text-[10px] font-bold text-slate-600">
-              {currentSubject === Subject.MATH ? `2학년 산수 / 3열 14행` : (currentSubject === Subject.CHINESE ? `${chineseConfig.grade} / ${chineseConfig.type} / 1열 20행` : `${englishConfig.grade} / ${englishConfig.type} / 3열 5행`)}
+              {currentSubject === Subject.MATH ? `2학년 산수 / 3열 14행` : (currentSubject === Subject.CHINESE ? `${chineseConfig.grade} / ${chineseConfig.type} / 1열 20행` : `${englishConfig.grade} / ${englishConfig.type} / 3열 14행`)}
             </span>
             <span className="text-[10px] text-slate-400 font-medium no-print">AI Smart System</span>
           </div>
@@ -68,24 +79,24 @@ export const Worksheet: React.FC<WorksheetProps> = ({
       <div className={`grid ${gridColsClass} gap-0 border-t-2 border-l-2 border-slate-900`}>
         {currentSubject === Subject.MATH && (currentProblems as MathProblem[]).map((p, idx) => (
           <div key={p.id} className="problem-grid-item border-r-2 border-b-2 border-slate-900">
-             <ProblemItem problem={p} index={idx} format={mathConfig.format} density={density} cols={3} />
+             <ProblemItem problem={p} index={idx} format={mathConfig.format} density={density} />
           </div>
         ))}
         {currentSubject === Subject.CHINESE && (currentProblems as ChineseProblem[]).map((p, idx) => (
           <div key={idx} className="problem-grid-item border-r-2 border-b-2 border-slate-900">
-             <ChineseProblemItem problem={p} index={idx} type={chineseConfig.type} density={density} />
+             <ChineseProblemItem problem={p} index={idx} type={chineseConfig.type} />
           </div>
         ))}
         {currentSubject === Subject.ENGLISH && (currentProblems as EnglishProblem[]).map((p, idx) => (
           <div key={idx} className="problem-grid-item border-r-2 border-b-2 border-slate-900">
-             <EnglishProblemItem problem={p} index={idx} type={englishConfig.type} density={density} cols={3} />
+             <EnglishProblemItem problem={p} index={idx} type={englishConfig.type} density={density} />
           </div>
         ))}
       </div>
 
       {showAnswerKey && (
-        <div className={`answer-key-section mt-auto no-print:opacity-50 ${isWritingPractice ? 'pt-1 print:pt-0.5' : 'pt-4'}`}>
-          <div className="border-t-2 border-dashed border-slate-200 pt-2 print:pt-1">
+        <div className={`answer-key-section mt-auto no-print:opacity-50 ${isWritingPractice ? 'pt-1' : 'pt-4'}`}>
+          <div className="border-t-2 border-dashed border-slate-200 pt-2">
             <div className="flex flex-wrap gap-x-3 gap-y-1">
               <span className="text-[9px] font-black text-slate-800 uppercase w-full mb-0.5 border-b border-slate-100 pb-0.5">정답 확인 (Answer Key)</span>
               {currentProblems.map((p, i) => (

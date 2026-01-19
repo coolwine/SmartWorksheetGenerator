@@ -39,7 +39,6 @@ export interface GeneratorConfig {
   digitMode: DigitMode;
   operation: OperationType;
   format: ProblemFormat;
-  cols: number; // Added column count configuration
 }
 
 // Chinese Character Types
@@ -94,5 +93,4 @@ export interface EnglishGeneratorConfig {
   count: number;
   grade: EnglishGrade;
   type: EnglishProblemType;
-  cols: number; // Added column count configuration for English
 }

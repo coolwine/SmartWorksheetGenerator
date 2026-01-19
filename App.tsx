@@ -20,19 +20,19 @@ const App: React.FC = () => {
   
   // Math: Fixed to 42 problems (3x14)
   const [mathConfig, setMathConfig] = useState<GeneratorConfig>({
-    count: 42, digitMode: DigitMode.TWO_TWO, operation: OperationType.MIXED, format: ProblemFormat.HORIZONTAL, cols: 3
+    count: 42, digitMode: DigitMode.TWO_TWO, operation: OperationType.MIXED, format: ProblemFormat.HORIZONTAL
   });
   const [mathProblems, setMathProblems] = useState<MathProblem[]>([]);
 
   // Chinese: Fixed to 20 for 1-column layout as requested
   const [chineseConfig, setChineseConfig] = useState<ChineseGeneratorConfig>({
-    count: 20, grade: ChineseGrade.LEVEL_8, type: ChineseProblemType.MULTIPLE_CHOICE
+    count: 15, grade: ChineseGrade.LEVEL_8, type: ChineseProblemType.MULTIPLE_CHOICE
   });
   const [chineseProblems, setChineseProblems] = useState<ChineseProblem[]>([]);
 
-  // English: Fixed to 15 problems (3x5)
+  // English: Now matches Math (42 problems, 3x14)
   const [englishConfig, setEnglishConfig] = useState<EnglishGeneratorConfig>({
-    count: 15, grade: EnglishGrade.GRADE_2, type: EnglishProblemType.VOCABULARY, cols: 3
+    count: 42, grade: EnglishGrade.GRADE_2, type: EnglishProblemType.VOCABULARY
   });
   const [englishProblems, setEnglishProblems] = useState<EnglishProblem[]>([]);
 
@@ -156,7 +156,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen pb-10">
-      <header className="no-print bg-white border-b sticky top-0 z-50 shadow-sm print:hidden">
+      <header className="no-print bg-white border-b sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col lg:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button onClick={() => setCurrentSubject(Subject.LANDING)} className="p-1.5 hover:bg-slate-100 rounded-full transition-all">
@@ -173,12 +173,19 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className={`max-w-4xl mx-auto mt-4 md:mt-8 bg-white shadow-xl min-h-[29.7cm] border border-slate-200 print:m-0 print:max-w-none print:shadow-none print:border-none print:w-full ${isWritingPractice ? 'p-[0.2cm] md:p-[0.4cm] print:p-[1mm]' : 'p-[0.5cm] md:p-[1cm] print:p-[5mm]'}`}>
+      <main className={`max-w-4xl mx-auto mt-4 md:mt-8 bg-white shadow-xl min-h-[29.7cm] border border-slate-200 ${isWritingPractice ? 'p-[0.2cm] md:p-[0.4cm]' : 'p-[0.5cm] md:p-[1cm]'}`}>
         <Worksheet 
           currentSubject={currentSubject}
-          mathProblems={mathProblems} chineseProblems={chineseProblems} englishProblems={englishProblems}
-          mathConfig={mathConfig} chineseConfig={chineseConfig} englishConfig={englishConfig}
-          showAnswerKey={showAnswerKey} density={density} gridColsClass={gridColsClass}
+          mathProblems={mathProblems}
+          chineseProblems={chineseProblems}
+          englishProblems={englishProblems}
+          mathConfig={mathConfig}
+          chineseConfig={chineseConfig}
+          englishConfig={englishConfig}
+          showAnswerKey={showAnswerKey}
+          density={density}
+          gridColsClass={gridColsClass}
+          isLoading={isLoading}
         />
       </main>
       <footer className="no-print mt-8 text-center text-slate-400 text-[12px]">
