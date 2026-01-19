@@ -18,7 +18,7 @@ const App: React.FC = () => {
   const [currentSubject, setCurrentSubject] = useState<Subject>(Subject.LANDING);
   const [showAnswerKey, setShowAnswerKey] = useState<boolean>(true);
   
-  // Math: Fixed to 42 problems (3x14)
+  // Math: Fixed to 42 problems
   const [mathConfig, setMathConfig] = useState<GeneratorConfig>({
     count: 42, digitMode: DigitMode.TWO_TWO, operation: OperationType.MIXED, format: ProblemFormat.HORIZONTAL
   });
