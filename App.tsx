@@ -30,7 +30,7 @@ const App: React.FC = () => {
   });
   const [chineseProblems, setChineseProblems] = useState<ChineseProblem[]>([]);
 
-  // English: Now matches Math (42 problems, 3x14)
+  // English: Now matches Math (42 problems)
   const [englishConfig, setEnglishConfig] = useState<EnglishGeneratorConfig>({
     count: 42, grade: EnglishGrade.GRADE_2, type: EnglishProblemType.VOCABULARY
   });
