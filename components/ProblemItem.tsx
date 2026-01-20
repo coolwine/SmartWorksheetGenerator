@@ -25,9 +25,9 @@ export const ProblemItem: React.FC<Props> = ({ problem, index, format, density }
 
   // Font size adjustment based on density
   const getFontSize = () => {
-    if (isCompact) return 'text-xl md:text-base'; // Slightly smaller for 3x14
-    if (isRelaxed) return 'text-3xl';
-    return 'text-xl';
+    if (isCompact) return 'text-lg md:text-base print:text-base'; // Smaller on mobile
+    if (isRelaxed) return 'text-2xl md:text-3xl print:text-3xl';
+    return 'text-lg md:text-xl print:text-xl';
   };
 
   const fontClasses = getFontSize();
@@ -38,9 +38,9 @@ export const ProblemItem: React.FC<Props> = ({ problem, index, format, density }
       <div className={`${containerClasses} items-center`}>
         <span className="absolute top-0.5 left-0.5 text-[14px] text-slate-300 font-bold">{index + 1}</span>
         <div className={`${fontClasses} ${numberFont} flex items-center gap-1`}>
-          <span className="text-2xl">{problem.num1}</span>
+          <span className="text-sm md:text-xl lg:text-2xl print:text-2xl">{problem.num1}</span>
           <span className="opacity-40 scale-90">{problem.operation}</span>
-          <span className="text-2xl">{problem.num2}</span>
+          <span className="text-sm md:text-xl lg:text-2xl print:text-2xl">{problem.num2}</span>
           <span className="opacity-40 scale-90">=</span>
           <div className={`${
             isCompact ? 'w-8' : 

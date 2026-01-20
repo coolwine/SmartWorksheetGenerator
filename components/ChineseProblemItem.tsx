@@ -18,7 +18,7 @@ const WritingPracticeItem: React.FC<{ problem: ChineseProblem; index: number }> 
         <div key={i} className="h-[1.5cm] border-r border-b border-slate-300 relative bg-white overflow-hidden first:border-l first:border-slate-300">
           {i === 0 ? (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-50">
-              <span className="font-serif text-slate-900 text-3xl leading-none">
+              <span className="font-serif text-slate-900 text-2xl md:text-3xl print:text-3xl leading-none">
                 {problem.character}
               </span>
               <div className="absolute bottom-0.5 left-0 right-0 text-center px-0.5">
@@ -50,12 +50,12 @@ const QuestionItem: React.FC<{ problem: ChineseProblem; index: number; type: Chi
     <span className="absolute top-1 left-1 text-[8px] text-slate-300 font-bold">{index + 1}</span>
     
     <div className="flex items-center justify-center w-12 md:w-16 shrink-0 border-r border-slate-100 mr-4">
-      <span className="text-2xl md:text-3xl font-serif text-slate-900">{problem.character}</span>
+      <span className="text-xl md:text-3xl print:text-3xl font-serif text-slate-900">{problem.character}</span>
     </div>
     
     <div className="flex-1 flex items-center">
       {type === ChineseProblemType.MULTIPLE_CHOICE ? (
-        <div className="grid grid-cols-4 gap-x-4 w-full text-[10px] md:text-[12px]">
+        <div className="grid grid-cols-4 gap-x-4 w-full text-[9px] md:text-[12px] print:text-[12px]">
           {problem.options?.map((opt, i) => (
             <div key={i} className="flex items-center gap-1 overflow-hidden whitespace-nowrap">
               <span className="font-black text-slate-400 shrink-0">({i + 1})</span>
@@ -65,7 +65,7 @@ const QuestionItem: React.FC<{ problem: ChineseProblem; index: number; type: Chi
         </div>
       ) : (
         <div className="flex items-center gap-3 w-full">
-          <span className="text-[10px] text-slate-400 shrink-0">(뜻과 음을 쓰세요)</span>
+          <span className="text-[9px] md:text-[10px] print:text-[10px] text-slate-400 shrink-0">(뜻과 음을 쓰세요)</span>
           <div className="flex-1 border-b-2 border-slate-200 h-6"></div>
         </div>
       )}
